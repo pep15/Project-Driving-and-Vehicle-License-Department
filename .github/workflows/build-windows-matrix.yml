@@ -1,0 +1,29 @@
+name: Build DVLD Project App Desktop
+
+on:
+    push:
+        branches:
+          - 'main'
+    pull_request:
+        branches:
+            - 'main'
+jobs:
+    Job_build:
+        runs-on: windows-latest
+        strategy:
+          matrix:
+            configuration: [Debug, Release]
+        steps:
+          - name: Checkout Repo
+            uses: actions/checkout@v4
+            with:
+                fetch-depth: 0
+        
+          - name: Add msbuild to PATH
+            uses: microsoft/setup-msbuild@v2
+
+          - name: Restore NuGet packages
+            run: nuget restore
+
+          - name: Build Solution
+            run: msbuild /p:Configuration=${{ matrix.configuration }}
