@@ -23,7 +23,7 @@ jobs:
             uses: microsoft/setup-msbuild@v2
 
           - name: Restore NuGet packages
-            run: nuget restore
+            run: nuget restore DVLD.sln
 
           - name: Build Solution
-            run: msbuild /p:Configuration=${{ matrix.configuration }}
+            run: msbuild DVLD.sln /p:Configuration=${{ matrix.configuration }}
