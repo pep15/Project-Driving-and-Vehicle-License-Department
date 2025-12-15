@@ -21,13 +21,13 @@ jobs:
           - name: Run Docker compose
             run: |
               echo "Windows start run"
-              docker compose up -d
+              docker compose up 
           
           - name: Uploade file exe
             uses: actions/upload-artifact@v4
             with:
               name: DVLD-Release
-              path: ./bin/Release/
+              path: ./DVLD.sln
 
           
           
