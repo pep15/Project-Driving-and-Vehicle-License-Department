@@ -1,30 +1,35 @@
 name: Build DVLD Project App Desktop
 
 on:
-    push:
-        branches:
-          - 'main'
-          - '*'
-    pull_request:
-        branches:
-            - 'main'
+    workflow_dispatch:
+      inputs:
+        action_type:
+          description: 'Choose Action'
+          required: true
+          type: choice
+          options:
+            - Start_Environment
 jobs:
     Job_build:
-        runs-on: windows-latest
-        strategy:
-          matrix:
-            configuration: [Debug, Release]
+        runs-on: self-hosted
         steps:
           - name: Checkout Repo
             uses: actions/checkout@v4
             with:
                 fetch-depth: 0
-        
-          - name: Add msbuild to PATH
-            uses: microsoft/setup-msbuild@v2
 
-          - name: Restore NuGet packages
-            run: nuget restore DVLD.sln
+          - name: Run Docker compose
+            run: |
+              echo "Windows start run"
+              docker compose up -d
+          
+          - name: Uploade file exe
+            uses: actions/upload-artifact@v4
+            with:
+              name: DVLD-Release
+              path: ./bin/Release/
 
-          - name: Build Solution
-            run: msbuild DVLD.sln /p:Configuration=${{ matrix.configuration }}
+          
+          
+
+
