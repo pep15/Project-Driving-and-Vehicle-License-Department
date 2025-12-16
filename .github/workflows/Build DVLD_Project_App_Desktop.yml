@@ -53,7 +53,6 @@ jobs:
             DB_PASSWORD: ${{secrets.MY_DB_PASSWORD}}
           run: |
             echo "Windows Starting booting"
-            docker compose up
             echo "Starting Services in Background"
             docker compose up -d --wait
 
@@ -71,6 +70,4 @@ jobs:
             
             echo "Database RESTORE completed successfully!"
 
-            echo "Remote web page:http://127.0.0.1:8006"
 
-            
