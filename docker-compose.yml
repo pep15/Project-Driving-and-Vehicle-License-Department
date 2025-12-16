@@ -4,6 +4,9 @@ services:
     container_name: windows
     environment:
       VERSION: "10"
+      RAM_SIZE: "16G"      
+      CPU_CORES: "8"        
+      DISK_SIZE: "80G"
       manual: "N"
     devices:
       - /dev/kvm
