@@ -4,7 +4,7 @@ services:
     container_name: windows
     environment:
       VERSION: "10"
-      RAM_SIZE: "16G"      
+      RAM_SIZE: "8G"      
       CPU_CORES: "8"        
       DISK_SIZE: "80G"
       manual: "N"
@@ -29,7 +29,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${MY_DB_PASSWORD}"
-      MSSQL_MEMORY_LIMIT_MB: 4096 
+      MSSQL_MEMORY_LIMIT_MB: 3072 
       MSSQL_PID: Developer
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]

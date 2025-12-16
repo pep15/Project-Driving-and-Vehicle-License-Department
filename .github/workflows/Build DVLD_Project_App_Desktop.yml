@@ -53,5 +53,5 @@ jobs:
             DB_PASSWORD: ${{secrets.MY_DB_PASSWORD}}
           run: |
             echo "Windows Starting booting"
-            docker compose up -d 
+            docker compose up -d --wait
             docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$env:MY_DB_PASSWORD" -Q "RESTORE DATABASE [DVLD] FROM DISK = '/backup_folder/DVLD_Backup.bak' WITH MOVE 'DVLD' TO '/var/opt/mssql/data/DVLD.mdf', MOVE 'DVLD_log' TO '/var/opt/mssql/data/DVLD_log.ldf', RECOVERY, REPLACE"
