@@ -24,7 +24,7 @@ services:
     stop_grace_period: 2m
 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2017-latest
     container_name: sqlserver
     environment:
       ACCEPT_EULA: "Y"
