@@ -13,7 +13,9 @@ services:
       - /dev/net/tun
     cap_add:
       - NET_ADMIN
-
+    depends_on:
+      sqlserver:
+        condition: service_healthy
     privileged: true 
     ports:
       - 8006:8006
@@ -21,8 +23,26 @@ services:
       - 3390:3389/udp
     volumes:
       - ./:/shared
-      - ./auto_build.bat:/oem/install.bat
-      - ./win_data:/storage
-
     restart: always
     stop_grace_period: 2m
+    
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${{MY_DB_PASSWORD}}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+      - ./:/backup_folder
+
+volumes:
+  sqlserverdata:
