@@ -40,7 +40,9 @@ services:
     volumes:
       - sqlserverdata:/var/opt/mssql
       - ./:/backup_folder
+    MSSQL_MEMORY_LIMIT_MB: 4096 
+    MSSQL_PID: Developer
 
 volumes:
   sqlserverdata:
-  
+
