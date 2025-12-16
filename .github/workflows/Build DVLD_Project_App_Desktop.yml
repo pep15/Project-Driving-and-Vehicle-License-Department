@@ -19,7 +19,7 @@ jobs:
                 fetch-depth: 0
 
           - name: Wait for Build to Finish (Check for done.txt)
-            timeout-minutes: 
+            timeout-minutes: 45
             run: |
              echo "Waiting for build completion..."
              while [ ! -f ./done.txt ]; do
