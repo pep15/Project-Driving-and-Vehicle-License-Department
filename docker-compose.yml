@@ -29,8 +29,8 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${MY_DB_PASSWORD}"
-      MSSQL_MEMORY_LIMIT_MB: 3072 
-      MSSQL_PID: Developer
+      #MSSQL_MEMORY_LIMIT_MB: 3072 
+      #MSSQL_PID: Developer
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $${MSSQL_SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
       interval: 20s
