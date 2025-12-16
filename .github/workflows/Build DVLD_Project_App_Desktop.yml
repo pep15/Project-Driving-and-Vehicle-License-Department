@@ -55,7 +55,7 @@ jobs:
             echo "Windows Starting booting"
             docker compose up
             echo "Starting Services in Background"
-            docker compose up -d
+            docker compose up -d --wait
 
             echo "Waiting 120 seconds for SQL Server to fully initialize..."
             sleep 120 
@@ -70,6 +70,6 @@ jobs:
             fi
             
             echo "Database RESTORE completed successfully!"
-            
+
             echo "Remote web page:http://127.0.0.1:8006"
 
