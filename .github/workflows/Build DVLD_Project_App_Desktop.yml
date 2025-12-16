@@ -54,7 +54,7 @@ jobs:
           run: |
             echo "Windows Starting booting"
             echo "Starting Services in Background"
-            docker compose up -d --wait
+            docker compose up -d 
 
             echo "Waiting 120 seconds for SQL Server to fully initialize..."
             sleep 120 
