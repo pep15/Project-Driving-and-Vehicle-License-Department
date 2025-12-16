@@ -20,7 +20,7 @@ services:
       - 3390:3389/tcp
       - 3390:3389/udp
     volumes:
-      - ./data:/shared
+      - ./:/shared
       - ./auto_build.bat:/oem/install.bat
 
     restart: always
