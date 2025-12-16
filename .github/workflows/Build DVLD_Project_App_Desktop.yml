@@ -1,41 +1,35 @@
 name: Build DVLD Project App Desktop
-
 on:
-    workflow_dispatch:
-      inputs:
-        action_type:
-          description: 'Choose Action'
-          required: true
-          type: choice
-          options:
-            - Start_Environment
+    push:
+        branches:
+          - 'master'
+
 jobs:
     Job_build:
-        runs-on: self-hosted
+        runs-on: windows-latest
         steps:
           - name: Checkout Repo
             uses: actions/checkout@v4
             with:
                 fetch-depth: 0
-          - name: Run Docker compose
-            run: |
-              echo "Starting Windows..."
-              docker compose up -d
 
-          - name: Wait for Build to Finish (Check for done.txt)
-            timeout-minutes: 45
-            run: |
-             echo "Waiting for build completion..."
-             while [ ! -f ./done.txt ]; do
-               echo "Building in progress... (Waiting for done.txt)"
-               sleep 60  
-             done
-             echo "Build Finished! Found done.txt"
+          - name: Setup MSBuild
+            uses: microsoft/setup-msbuild@v2
 
+          - name: Restore NuGet Packages
+            run: nuget restore DVLD.sln
+
+          - name: Build Solution
+            run: msbuild DVLD.sln /p:Configuration=Release /p:Platform="Any CPU"
 
           - name: Uploade file exe
             uses: actions/upload-artifact@v4
             with:
               name: DVLD-Release
-              path: ${{ github.workspace }}
+              path: |
+                **/bin/Release/*.exe
+                **/bin/Release/*.dll
+                **/bin/Release/*.config
+          
+      
 
