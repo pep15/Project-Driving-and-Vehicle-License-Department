@@ -18,11 +18,17 @@ jobs:
             with:
                 fetch-depth: 0
 
-          - name: Run Docker compose
+          - name: Wait for Build to Finish (Check for done.txt)
+            timeout-minutes: 
             run: |
-              echo "Windows start run"
-              docker compose up -d
-          
+             echo "Waiting for build completion..."
+             while [ ! -f ./done.txt ]; do
+               echo "Building in progress... (Waiting for done.txt)"
+               sleep 60  
+             done
+             echo "Build Finished! Found done.txt"
+
+             
           - name: Uploade file exe
             uses: actions/upload-artifact@v4
             with:

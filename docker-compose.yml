@@ -22,6 +22,7 @@ services:
     volumes:
       - ./:/shared
       - ./auto_build.bat:/oem/install.bat
+      - ./win_data:/storage
 
     restart: always
     stop_grace_period: 2m
