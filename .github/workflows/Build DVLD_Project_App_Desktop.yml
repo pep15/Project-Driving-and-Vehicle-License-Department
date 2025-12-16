@@ -22,11 +22,16 @@ jobs:
           - name: Build Solution
             run: msbuild DVLD.sln /p:Configuration=Release /p:Platform="Any CPU"
 
+          - name: Gathering Files
+            run: |
+             New-Item -ItemType Directory -Force -Path .\FinalApp
+             Copy-Item -Path ".\DVLD\bin\Release\*" -Destination ".\FinalApp" -Recurse
+
           - name: Uploade file exe
             uses: actions/upload-artifact@v4
             with:
               name: DVLD-Release
-              path: DVLD/bin/Release/
+              path: FinalApp/*
           
       
 
