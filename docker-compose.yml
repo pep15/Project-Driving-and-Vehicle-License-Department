@@ -41,5 +41,5 @@ services:
        - sqlserverdata:/var/opt/mssql
        - ./:/backup_folder
    
-  volumes:
+volumes:
    sqlserverdata:
