@@ -11,10 +11,7 @@ jobs:
           - name: Checkout Repo
             uses: actions/checkout@v4
             with:
-                sparse-checkout: |
-                  docker-compose.yml
-                  DVLD_Backup.bak
-                sparse-checkout-cone-mode: false
+                fetch-depth: 0
 
           - name: Setup MSBuild
             uses: microsoft/setup-msbuild@v2
@@ -43,8 +40,11 @@ jobs:
         - name: Checkout Repo
           uses: actions/checkout@v4
           with:
-              fetch-depth: 0
-
+              sparse-checkout: |
+                  docker-compose.yml
+                  DVLD_Backup.bak
+              sparse-checkout-cone-mode: false
+              
         - name: Download Release
           uses: actions/download-artifact@v4
           with:
@@ -72,4 +72,4 @@ jobs:
             echo "Database RESTORE completed successfully!"
 
 
-
+            
