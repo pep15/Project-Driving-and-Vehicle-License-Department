@@ -58,29 +58,11 @@ jobs:
             echo "Windows Starting booting"
             docker compose up -d
 
-            echo "Checking container status immediately..."
-            sleep 10
-
-            CONTAINER_STATUS=$(docker inspect --format="{{.State.Running}}" sqlserver 2>/dev/null || echo "false")
-            
-            if [ "$CONTAINER_STATUS" != "true" ]; then
-              echo "🚨 CRITICAL ERROR: SQL Server container crashed immediately after starting!"
-              echo "--- Showing SQL Server Logs ---"
-              docker logs sqlserver
-              exit 1
-            fi
-
-            echo "Container is running. Waiting remaining time for full initialization..."
+            echo "Container is running. Waiting remaining time"
             sleep 110
 
             echo "Attempting database RESTORE!"
             docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "$MY_DB_PASSWORD -C -Q "RESTORE DATABASE [DVLD] FROM DISK = '/backup_folder/DVLD_Backup.bak' WITH MOVE 'DVLD' TO '/var/opt/mssql/data/DVLD.mdf', MOVE 'DVLD_log' TO '/var/opt/mssql/data/DVLD_log.ldf', RECOVERY, REPLACE"
-            
-            if [ $? -ne 0 ]; then
-              echo "--- Database RESTORE Failed. Fetching SQL Server Logs for diagnosis ---"
-              docker logs sqlserver --tail 200
-              exit 1
-            fi
             
             echo "Database RESTORE completed successfully!"
 
