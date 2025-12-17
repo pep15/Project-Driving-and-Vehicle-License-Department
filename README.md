@@ -1,73 +1,58 @@
 DVLD - Driving and Vehicle License Department System
-📝 Project Overview
+📝 Overview
+DVLD is a comprehensive enterprise desktop application tailored for automating the management of driving licenses, tests, and vehicle registrations. It a-grade system handling complex workflows from applicant registration to license issuance (Local & International).
 
-DVLD is a comprehensive desktop application designed to automate and manage the core operations of a Driving and Vehicle License Department. The system handles the complete lifecycle of driver management, from the initial application and testing process to the issuance, renewal, and management of driving licenses (Local and International).
+This project demonstrates a full software development lifecycle (SDLC) implementation, featuring a robust N-Tier Architecture, secure data handling, and a modern DevOps pipeline.
 
-This project was built to simulate a real-world enterprise environment, focusing on data integrity, complex business logic, and a user-friendly interface.
-🏗️ Software Architecture
+🏗️ Architecture
+The system follows a strict N-Tier Architecture to ensure separation of concerns:
 
-The system is engineered using a robust N-Tier Architecture, ensuring a clean separation of concerns, scalability, and maintainability:
+Presentation Layer (PL): Windows Forms (WinForms) for UI/UX.
 
-    Presentation Layer (PL): Built with Windows Forms (WinForms), providing an intuitive and responsive User Interface.
+Business Logic Layer (BLL): C# Class Library handling rules (e.g., Age validation, License validity calculations, Save() logic routing).
 
-    Business Logic Layer (BLL): Contains all the business rules, validations, and logical operations (e.g., license expiration checks, age validation, fees calculation).
+Data Access Layer (DAL): ADO.NET abstraction layer for communicating with SQL Server via Stored Procedures.
 
-    Data Access Layer (DAL): Manages all direct communications with the database using ADO.NET.
+Database: Microsoft SQL Server.
 
-    Database: A relational database designed with Microsoft SQL Server.
+🔄 DevOps & CI/CD Pipeline (New)
+To modernize the build process, I moved away from traditional VM-based builds.
 
-💻 Technologies & Tools
+Containerized Build Environment: utilized Docker to run a Windows container (using dockur/windows).
 
-    Language: C# (.NET Framework)
+CI/CD: Configured GitHub Actions with a Self-Hosted Runner inside the Docker container.
 
-    Database: Microsoft SQL Server (T-SQL)
+Benefit: This setup isolates the build environment, ensures dependency consistency, and drastically reduces infrastructure overhead compared to full VMs.
 
-    UI Framework: Windows Forms
+💻 Tech Stack
+Language: C# (.NET Framework)
 
-    IDE: Microsoft Visual Studio
+Data: MS SQL Server (T-SQL, Stored Procedures)
+
+ORM/Access: ADO.NET
+
+DevOps: Docker, GitHub Actions, Self-Hosted Runners
 
 🚀 Key Features
+Core Management: Full CRUD for People, Drivers, and Users using a centralized logic pattern.
 
-    People & Driver Management:
+License Lifecycle:
 
-        Full CRUD operations for managing person details (National ID, Date of Birth, Address, etc.).
+Issuance (First time, Renew, Replacement).
 
-        Tracking driver history and linking drivers to multiple licenses.
+International License conversion.
 
-    License Management:
+Detain & Release licenses (Logic handles fines and restrictions).
 
-        Local Licenses: Issuing new licenses, renewing expiring ones, and replacing lost or damaged licenses.
+Testing Center: Management of Vision, Theory, and Practical tests with appointment scheduling constraints.
 
-        International Licenses: Handling applications and issuance of international driving permits.
+Security: Role-based access control and hashed credentials.
 
-    Application & Test Process:
+🗄️ Database Strategy
+The database is normalized to ensure integrity, heavily utilizing:
 
-        Managing different application types (New Local License, Renew, Replacement, Release Detained).
+Stored Procedures: To encapsulate queries and prevent SQL Injection.
 
-        Scheduling and managing tests (Vision Test, Written Theory Test, Practical Street Test).
+Views: For efficient data presentation in DGV (DataGrid Views).
 
-    Detain & Release Licenses:
-
-        System for detaining licenses due to traffic violations or unpaid fees.
-
-        Calculation of fine fees and releasing licenses upon payment.
-
-    User Security:
-
-        Role-based user management.
-
-        Secure login and authentication system.
-
-🗄️ Database Design
-
-The project features a complex Relational Database Management System (RDBMS) design, utilizing:
-
-    Primary & Foreign Keys to ensure referential integrity.
-
-    Stored Procedures and parameterized queries for security and performance.
-
-    Views for simplified data retrieval.
-
-    Tables covering Users, People, Drivers, Licenses, Applications, Tests, and Detained Licenses.
-
-Developed by Moath Aljmaan
+Relationships: Complex One-to-One and One-to-Many relationships linking Drivers, Licenses, and Applications.
