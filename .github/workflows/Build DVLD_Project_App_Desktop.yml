@@ -62,9 +62,11 @@ jobs:
             sleep 110
 
             echo "Attempting database RESTORE!"
-            docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "$MY_DB_PASSWORD -C -Q "RESTORE DATABASE [DVLD] FROM DISK = '/backup_folder/DVLD_Backup.bak' WITH MOVE 'DVLD' TO '/var/opt/mssql/data/DVLD.mdf', MOVE 'DVLD_log' TO '/var/opt/mssql/data/DVLD_log.ldf', RECOVERY, REPLACE"
-            
+            docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "$MY_DB_PASSWORD" -C -Q "RESTORE DATABASE [DVLD] FROM DISK = '/backup_folder/DVLD_Backup.bak' WITH MOVE 'DVLD' TO '/var/opt/mssql/data/DVLD.mdf', MOVE 'DVLD_log' TO '/var/opt/mssql/data/DVLD_log.ldf', RECOVERY, REPLACE"
+
             echo "Database RESTORE completed successfully!"
+            echo "IP of Connected remote web:"
+            echo "http://127.0.0.0:8006"
 
 
             
