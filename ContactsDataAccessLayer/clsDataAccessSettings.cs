@@ -5,6 +5,6 @@ namespace ContactsDataAccessLayer
     internal class clsDataAccessSettings
     {
 
-        public static string ConnectionString = "Server=MOATHALJAMM0EEE;Database=DVLD;Integrated Security=True";
+        public static string ConnectionString = "Server=sqlserver;Database=DVLD;User Id=sa;Password=MyStrongP@ssw0rd!;TrustServerCertificate=True";
     }
 }
