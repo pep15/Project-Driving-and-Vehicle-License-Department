@@ -138,6 +138,7 @@ namespace DVLD.ControlerPerson
             int PersonID = (int)dgvListPeople.CurrentRow.Cells["PersonID"].Value;
             Form frmUpdate = new FrmUpdateUser(PersonID);
             frmUpdate.ShowDialog();
+            _RefrechContactList(true);
         }
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {

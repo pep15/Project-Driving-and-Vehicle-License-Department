@@ -94,6 +94,8 @@ namespace DVLD.ControlerPerson
             cbCountry.SelectedIndex = 149;
             lbRemove.Visible = false;
 
+            MaxDate();
+
             if (_Mode == enMode.Add)
             {
                 label1.Text = "Add new Person";
