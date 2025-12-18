@@ -74,16 +74,3 @@ jobs:
 
             echo "IP of Connected remote web:"
             echo "http://127.0.0.1:8006"
-            
-
-
-
-            
-
-
-<<<<<<< HEAD
-
-=======
-            
-
->>>>>>> 77655c23f0abb5c074b17a05c9279873445efc49
