@@ -1,0 +1,46 @@
+services:
+  windows:
+    image: dockurr/windows
+    container_name: windows
+    environment:
+      VERSION: "11"
+      RAM_SIZE: "8G"      
+      CPU_CORES: "8"        
+      DISK_SIZE: "80G"
+      manual: "N"
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    privileged: true 
+    ports:
+      - 8006:8006
+      - 3390:3389/tcp
+      - 3390:3389/udp
+    volumes:
+      - ./:/shared
+    restart: always
+    stop_grace_period: 2m
+
+  sqlserver:
+     image: mcr.microsoft.com/mssql/server:2022-latest
+     container_name: sqlserver
+     environment:
+       ACCEPT_EULA: "Y"
+       MSSQL_SA_PASSWORD: "${MY_DB_PASSWORD}"
+     healthcheck:
+       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${MY_DB_PASSWORD}' -C -Q 'SELECT 1' || exit 1"]
+       interval: 20s
+       retries: 15
+       start_period: 30s
+       timeout: 3s
+     ports:
+       - "1433:1433"
+     volumes:
+       - sqlserverdata:/var/opt/mssql
+       - ./:/backup_folder
+   
+volumes:
+   sqlserverdata:
+   

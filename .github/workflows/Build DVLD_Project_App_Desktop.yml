@@ -1,0 +1,76 @@
+name: Build DVLD Project App Desktop
+on:
+    push:
+        branches:
+          - 'master'
+        paths-ignore:
+          - '**.md'
+          - 'view/**.png'
+
+jobs:
+    Job_build:
+        runs-on: windows-latest
+        steps:
+          - name: Checkout Repo
+            uses: actions/checkout@v4
+            with:
+                fetch-depth: 0
+
+          - name: Setup MSBuild
+            uses: microsoft/setup-msbuild@v2
+
+          - name: Restore NuGet Packages
+            run: nuget restore src/DVLD.sln
+
+          - name: Build Solution
+            run: msbuild src/DVLD.sln /p:Configuration=Release /p:Platform="Any CPU"
+
+          - name: Gathering Files
+            run: |
+             New-Item -ItemType Directory -Force -Path .\FinalApp
+             Copy-Item -Path ".\src\DVLD\bin\Release\*" -Destination ".\FinalApp" -Recurse
+
+          - name: Uploade file exe
+            uses: actions/upload-artifact@v4
+            with:
+              name: DVLD-Release
+              path: FinalApp/*
+
+    Job_Run_App:
+      runs-on: self-hosted
+      needs: [Job_build]
+      steps:
+        - name: Checkout Repo
+          uses: actions/checkout@v4
+          with:
+              sparse-checkout: |
+                  Devops/docker-compose.yml
+                  Devops/.env
+                  src/DVLD_Backup.bak
+              sparse-checkout-cone-mode: false
+
+        - name: Download Release
+          uses: actions/download-artifact@v4
+          with:
+            name: DVLD-Release
+            path: ./release_files
+
+        - name: Run Docker compose
+          env:
+            MY_DB_PASSWORD: ${{secrets.MY_DB_PASSWORD}}
+          run: |
+            mv src/DVLD_Backup.bak Devops/
+            cd Devops
+            echo "Windows Starting booting"
+            docker compose up -d
+
+            echo "Container is running. Waiting remaining time"
+            sleep 110
+
+            echo "Attempting database RESTORE!"
+            docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "$MY_DB_PASSWORD" -C -Q "RESTORE DATABASE [DVLD] FROM DISK = '/backup_folder/DVLD_Backup.bak' WITH MOVE 'DVLD' TO '/var/opt/mssql/data/DVLD.mdf', MOVE 'DVLD_log' TO '/var/opt/mssql/data/DVLD_log.ldf', RECOVERY, REPLACE"
+
+            echo "Database RESTORE completed successfully!"
+
+            echo "IP of Connected remote web:"
+            echo "http://127.0.0.1:8006"
