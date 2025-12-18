@@ -59,7 +59,6 @@ jobs:
           env:
             MY_DB_PASSWORD: ${{secrets.MY_DB_PASSWORD}}
           run: |
-            ls -R
             mv src/DVLD_Backup.bak Devops/
             mkdir -p Devops/App
             cp -r release_files/* Devops/App/
@@ -77,5 +76,3 @@ jobs:
 
             echo "IP of Connected remote web:"
             echo "http://127.0.0.1:8006"
-
-            #MY_DB_PASSWORD=MyStrongP@ssw0rd!
