@@ -3,6 +3,10 @@ on:
     push:
         branches:
           - 'master'
+        paths-ignore:
+          - '**.md'
+          - 'view/**.png'
+
 jobs:
     Job_build:
         runs-on: windows-latest
@@ -77,4 +81,9 @@ jobs:
             
 
 
+<<<<<<< HEAD
+
+=======
             
+
+>>>>>>> 77655c23f0abb5c074b17a05c9279873445efc49
